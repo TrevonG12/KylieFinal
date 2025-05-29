@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>100 Reasons Why I Love You</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Open+Sans&display=swap" rel="stylesheet">
+  <style>
+    .start-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(120deg, #2a5298, #ff69b4);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .start-screen h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.5em;
+      color: white;
+      text-shadow: 0 0 20px rgba(255, 192, 203, 0.9);
+      margin-bottom: 20px;
+    }
+
+    .start-screen button {
+      padding: 15px 30px;
+      font-size: 1.2em;
+      background: pink;
+      color: navy;
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .start-screen button:hover {
+      transform: scale(1.05);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: 'Open Sans', sans-serif;
+      background: linear-gradient(120deg, #2a5298, #ff69b4);
+      color: pink;
+      transition: background 0.5s ease;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 25px 25px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    canvas#tulipCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .book {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      box-sizing: border-box;
+      z-index: 2;
+    }
+
+    .page {
+      display: none;
+      width: 90%;
+      max-width: 700px;
+      background: transparent;
+      color: navy;
+      padding: 40px;
+      border-radius: 30px;
+      box-shadow: none;
+      font-size: 2.2em;
+      line-height: 1.8;
+      text-align: center;
+      font-family: 'Great Vibes', cursive;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .header {
+      position: absolute;
+      top: 20px;
+      text-align: center;
+      width: 100%;
+      font-size: 3.5em;
+      font-family: 'Great Vibes', cursive;
+      color: pink;
+      text-shadow: 0 0 20px rgba(255, 192, 203, 0.9);
+      z-index: 3;
+    }
+
+    .reason-box {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 500px;
+      margin: 0 auto 30px auto;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .textbox {
+      margin-top: 20px;
+      font-size: 1em;
+      text-align: center;
+      color: white;
+      z-index: 3;
+    }
+
+    .textbox textarea {
+      margin-top: 10px;
+      padding: 12px;
+      width: 320px;
+      height: 100px;
+      font-size: 1em;
+      border-radius: 12px;
+      border: none;
+      resize: none;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .textbox button {
+      margin-top: 10px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 12px;
+      background: pink;
+      color: navy;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    }
+
+    .textbox button:hover {
+      transform: scale(1.05);
+    }
+
+    .nav-buttons {
+      margin-top: 30px;
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+    }
+
+    .nav-buttons button {
+      padding: 12px 28px;
+      border-radius: 12px;
+      border: none;
+      background: pink;
+      color: navy;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .nav-buttons button:hover {
+      background: hotpink;
+      transform: scale(1.05);
+    }
+        .nav-buttons button:hover {
+      background: hotpink;
+      transform: scale(1.05);
+    }
+
+    /* MOBILE RESPONSIVE ADDITIONS START */
+    @media (max-width: 600px) {
+      .reason-box {
+        max-width: 90vw !important;
+        padding: 15px !important;
+        font-size: 1.4em !important;
+      }
+      .textbox textarea {
+        width: 90vw !important;
+        height: 80px !important;
+        font-size: 1em !important;
+      }
+      .textbox button,
+      .nav-buttons button {
+        padding: 10px 18px !important;
+        font-size: 1em !important;
+      }
+      .nav-buttons {
+        gap: 15px !important;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .header {
+        font-size: 2.5em !important;
+      }
+      .start-screen h1 {
+        font-size: 2.5em !important;
+        padding: 0 10px;
+        text-align: center;
+      }
+      .start-screen button {
+        font-size: 1em !important;
+        padding: 12px 24px !important;
+      }
+    }
+    /* MOBILE RESPONSIVE ADDITIONS END */
+  </style>
+
+  </style>
+</head>
+<body>
+  <div class="start-screen" id="startScreen">
+    <h1>To My Beautiful Kylie 💖</h1>
+    <button onclick="startJourney()">Start Reading</button>
+  </div>
+  <canvas id="tulipCanvas"></canvas>
+  <div class="header hidden">100 Reasons Why I Love You</div>
+  <div class="book hidden" id="bookContainer"></div>
+
+  <script>
+    const reasons = [
+      "You are beautiful",
+      "You are joyful",
+      "You have such a gentle and loving heart",
+      "Your eyes are beautiful",
+      "Your smile is beautiful",
+      "You are so sweet and kind",
+      "You love with a big heart",
+      "You care about me",
+      "You are unique",
+      "You are a woman of God",
+      "You are one of God's greatest creations",
+      "Your hugs feel like home",
+      "You care about my emotions",
+      "You let me be myself"
+    ];
+
+    const container = document.getElementById('bookContainer');
+    let currentPage = 0;
+
+    function updatePage() {
+      const pages = document.querySelectorAll('.page');
+      pages.forEach((p, index) => {
+        p.classList.toggle('active', index === currentPage);
+      });
+    }
+
+    function nextPage() {
+      const totalPages = reasons.length + 1; // Include Bible verse page
+      if (currentPage < totalPages - 1) {
+        currentPage++;
+        updatePage();
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 0) {
+        currentPage--;
+        updatePage();
+      }
+    }
+
+    function sendMessage(index) {
+      const message = document.getElementById(`messageBox${index}`).value;
+      if (!message.trim()) return;
+      fetch("https://formsubmit.co/ajax/trevongriffin88@gmail.com", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ message })
+      })
+        .then(response => response.json())
+        .then(data => alert("Message sent!"))
+        .catch(error => alert("Failed to send message."));
+    }
+
+    reasons.forEach((text, i) => {
+      const page = document.createElement('div');
+      page.classList.add('page');
+      if (i === 0) page.classList.add('active');
+
+      page.innerHTML = `
+        <div class="reason-box">
+          <div class="reason-text" style="color: navy;">${text}</div>
+        </div>
+        <div class="nav-buttons">
+          <button onclick="prevPage()">Previous</button>
+          <button onclick="nextPage()">Next</button>
+        </div>
+        <div class="textbox">
+          <p>Write me something 💌</p>
+          <textarea id="messageBox${i}" placeholder="Type here..."></textarea>
+          <br/>
+          <button onclick="sendMessage(${i})">Send</button>
+        </div>
+      `;
+      container.appendChild(page);
+
+      if (i === reasons.length - 1) {
+        const versePage = document.createElement('div');
+        versePage.classList.add('page');
+        versePage.innerHTML = `
+          <div class="reason-box">
+            <div class="reason-text" style="color: navy;">"Love is patient, love is kind. It does not envy, it does not boast, it is not proud."<br>– 1 Corinthians 13:4</div>
+          </div>
+          <div class="nav-buttons">
+            <button onclick="prevPage()">Previous</button>
+          </div>
+        `;
+        container.appendChild(versePage);
+      }
+    });
+  function startJourney() {
+      document.getElementById('startScreen').classList.add('hidden');
+      document.querySelector('.header').classList.remove('hidden');
+      document.getElementById('bookContainer').classList.remove('hidden');
+    }
+  </script>
+  <script>
+    const canvas = document.getElementById('tulipCanvas');
+    const ctx = canvas.getContext('2d');
+    let petals = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function createPetal() {
+      return {
+        x: Math.random() * canvas.width,
+        y: Math.random() * -canvas.height,
+        size: Math.random() * 10 + 10,
+        speed: Math.random() * 1 + 0.3,
+        drift: Math.random() * 1 - 0.5,
+        opacity: Math.random() * 0.5 + 0.5
+      };
+    }
+
+    for (let i = 0; i < 40; i++) {
+      petals.push(createPetal());
+    }
+
+    function drawPetals() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      petals.forEach(petal => {
+        ctx.save();
+        ctx.beginPath();
+        ctx.translate(petal.x, petal.y);
+        ctx.rotate(Math.PI / 5);
+        ctx.scale(1, 1.4);
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(
+          -petal.size / 2, -petal.size / 2,
+          -petal.size, petal.size / 1.5,
+          0, petal.size
+        );
+        ctx.bezierCurveTo(
+          petal.size, petal.size / 1.5,
+          petal.size / 2, -petal.size / 2,
+          0, 0
+        );
+        ctx.closePath();
+        ctx.fillStyle = `rgba(255, 0, 0, ${petal.opacity})`;
+        ctx.fill();
+        ctx.restore();
+
+        petal.y += petal.speed;
+        petal.x += petal.drift;
+
+        if (petal.y > canvas.height || petal.x < 0 || petal.x > canvas.width) {
+          Object.assign(petal, createPetal());
+        }
+      });
+
+      requestAnimationFrame(drawPetals);
+    }
+
+    drawPetals();
+  </script>
+</body>
